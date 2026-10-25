@@ -1,0 +1,18 @@
+# 密钥与个人配置，绝不能提交到 GitHub
+.env
+
+# 运行时生成的数据
+tasks.json
+tasks.json.bak
+chat_history.json
+chat_history.json.tmp
+
+# 语音模型（首次使用自动下载，约 40MB）
+models/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/

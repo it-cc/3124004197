@@ -1,0 +1,5 @@
+# 可选的语音功能依赖（加分项），基础功能不装也能跑
+# pip install -r requirements-voice.txt
+pyttsx3>=2.90        # 语音播报（离线，Windows 用 SAPI5 / Linux 需 apt install espeak-ng）
+vosk>=0.3.45         # 离线中文语音识别（首次使用自动下载约 40MB 小模型）
+sounddevice>=0.4.6   # 麦克风录音

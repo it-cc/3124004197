@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TodoPal · 待办清单智能体</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">🤖 TodoPal <span class="sub">能说会做的待办清单智能体 · MCP</span></div>
+    <button id="speakToggle" class="ghost-btn" title="朗读助手的回复">🔇 播报关</button>
+  </header>
+
+  <main>
+    <section class="chat-panel">
+      <div id="messages" class="messages">
+        <div class="msg bot">你好！我是 TodoPal 🙋<br>
+          可以用自然语言让我帮你记事、查任务、查天气，比如：<br>
+          “我明天上午十点要开组会，周五要交软件工程作业，帮我记一下”
+        </div>
+      </div>
+      <div id="typing" class="typing hidden">TodoPal 正在思考…</div>
+      <div class="input-row">
+        <input id="input" type="text" placeholder="输入消息，例如：看看我还有什么没做的…" autocomplete="off" />
+        <button id="sendBtn">发送</button>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <div class="card">
+        <div class="card-head">
+          <h3>📋 任务清单</h3>
+          <button id="refreshBtn" class="ghost-btn small">刷新</button>
+        </div>
+        <pre id="taskList" class="task-list">加载中…</pre>
+      </div>
+
+      <div class="card">
+        <h3>💡 试试对我说</h3>
+        <ul class="hints">
+          <li>我明天下午三点要开组会，帮我记一下</li>
+          <li>看看我还有哪些事没做完</li>
+          <li>把 2 号任务标记为完成</li>
+          <li>明天广州会下雨吗？</li>
+          <li>我今天还有多少事？</li>
+        </ul>
+        <button id="clearBtn" class="danger-btn">🧽 清空对话记忆</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
