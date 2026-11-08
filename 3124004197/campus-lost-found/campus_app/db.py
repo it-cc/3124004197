@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS claims (
  id INTEGER PRIMARY KEY, item_id INTEGER NOT NULL REFERENCES items(id),
  claimant_id INTEGER NOT NULL REFERENCES users(id), proof TEXT NOT NULL,
  status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','rejected')),
- note TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+ note TEXT NOT NULL DEFAULT '', resolution TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
  UNIQUE(item_id, claimant_id)
 );
 CREATE TABLE IF NOT EXISTS chat_messages (
@@ -58,3 +58,8 @@ class Database:
         with self.connect() as conn:
             conn.execute('PRAGMA journal_mode=WAL')
             conn.executescript(SCHEMA)
+            columns={row[1] for row in conn.execute('PRAGMA table_info(claims)')}
+            if 'resolution' not in columns:
+                conn.execute("ALTER TABLE claims ADD COLUMN resolution TEXT NOT NULL DEFAULT ''")
+            conn.execute("UPDATE claims SET resolution='accepted' WHERE status='accepted' AND resolution=''")
+            conn.execute("UPDATE claims SET resolution='ended' WHERE status='rejected' AND resolution=''")

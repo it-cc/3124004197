@@ -422,7 +422,7 @@ def create_app(data_dir=None, demo=None):
         owner_item(ident, user)
         with database.connect() as conn:
             conn.execute("UPDATE items SET status='returned',updated_at=? WHERE id=?", (now(),ident))
-            conn.execute("UPDATE claims SET status='rejected',note='该物品已找回或归还',updated_at=? WHERE item_id=? AND status='pending'", (now(),ident))
+            conn.execute("UPDATE claims SET status='rejected',resolution='returned',note='该物品已找回或归还',updated_at=? WHERE item_id=? AND status='pending'", (now(),ident))
         return {'ok': True}
 
     @app.delete('/api/items/{ident}')
@@ -445,14 +445,16 @@ def create_app(data_dir=None, demo=None):
                 raise HTTPException(404, '物品信息不存在')
             if item['owner_id'] == user['id']:
                 raise HTTPException(400, '不能认领自己发布的物品')
+            if bool(item['is_demo']) != (user['username'] in ('demo_lost','demo_found')):
+                raise HTTPException(403,'演示账号仅可处理演示记录；真实账号请使用真实线索')
             if item['status'] != 'active':
                 raise HTTPException(409, '该物品已找回或归还')
             previous=conn.execute('SELECT * FROM claims WHERE item_id=? AND claimant_id=?',(ident,user['id'])).fetchone()
             if previous:
                 if previous['status']!='rejected':raise HTTPException(409,'你已提交过请求，请在“我的请求”查看进展')
-                if previous['proof']==body.proof and previous['note']!='申请者已撤回':
+                if previous['proof']==body.proof and previous['resolution']!='withdrawn':
                     raise HTTPException(409,'请补充或修改核验说明后再提交')
-                conn.execute("UPDATE claims SET proof=?,status='pending',note='',updated_at=? WHERE id=?",(body.proof,now(),previous['id']))
+                conn.execute("UPDATE claims SET proof=?,status='pending',resolution='',note='',updated_at=? WHERE id=?",(body.proof,now(),previous['id']))
                 claim_id=previous['id']
             else:
                 cur=conn.execute('INSERT INTO claims(item_id,claimant_id,proof,created_at,updated_at) VALUES(?,?,?,?,?)',(ident,user['id'],body.proof,now(),now()))
@@ -467,7 +469,7 @@ def create_app(data_dir=None, demo=None):
             if not row:raise HTTPException(404,'请求不存在')
             if row['claimant_id']!=user['id']:raise HTTPException(403,'只能撤回本人请求')
             if row['status']!='pending':raise HTTPException(409,'只有待核验请求可以撤回')
-            conn.execute("UPDATE claims SET status='rejected',note='申请者已撤回',updated_at=? WHERE id=?",(now(),ident))
+            conn.execute("UPDATE claims SET status='rejected',resolution='withdrawn',note='申请者已撤回',updated_at=? WHERE id=?",(now(),ident))
         return {'ok':True}
 
     @app.get('/api/me/claims')
@@ -476,7 +478,7 @@ def create_app(data_dir=None, demo=None):
             rows = conn.execute('SELECT c.*,i.title,i.kind,i.owner_id,i.status item_status,o.nickname owner_name,o.contact owner_contact,u.nickname claimant_name,u.contact claimant_contact FROM claims c JOIN items i ON i.id=c.item_id JOIN users o ON o.id=i.owner_id JOIN users u ON u.id=c.claimant_id WHERE i.owner_id=? OR c.claimant_id=? ORDER BY c.updated_at DESC,c.id DESC', (user['id'],user['id'])).fetchall()
         results = []
         for row in rows:
-            data = {k: row[k] for k in ('id','item_id','claimant_id','proof','status','note','created_at','title','kind','owner_id','owner_name','claimant_name','item_status','updated_at')}
+            data = {k: row[k] for k in ('id','item_id','claimant_id','proof','status','note','created_at','title','kind','owner_id','owner_name','claimant_name','item_status','updated_at','resolution')}
             if row['status'] == 'accepted':
                 data['contact'] = row['claimant_contact'] if row['owner_id'] == user['id'] else row['owner_contact']
             results.append(data)
@@ -496,10 +498,10 @@ def create_app(data_dir=None, demo=None):
             if body.expected_updated_at is not None and body.expected_updated_at != claim['updated_at']:
                 raise HTTPException(409,'请求内容已变化，请刷新后重新核验')
             status = 'accepted' if body.decision == 'accept' else 'rejected'
-            conn.execute('UPDATE claims SET status=?,note=?,updated_at=? WHERE id=?', (status,body.note,now(),ident))
+            conn.execute('UPDATE claims SET status=?,resolution=?,note=?,updated_at=? WHERE id=?', (status,status,body.note,now(),ident))
             if status == 'accepted':
                 conn.execute("UPDATE items SET status='returned',updated_at=? WHERE id=?", (now(),claim['item_id']))
-                conn.execute("UPDATE claims SET status='rejected',note='该物品已归还',updated_at=? WHERE item_id=? AND id<>? AND status='pending'", (now(),claim['item_id'],ident))
+                conn.execute("UPDATE claims SET status='rejected',resolution='returned',note='该物品已归还',updated_at=? WHERE item_id=? AND id<>? AND status='pending'", (now(),claim['item_id'],ident))
         return {'ok': True}
 
     async def run_ai(function, *args):
@@ -548,7 +550,7 @@ def create_app(data_dir=None, demo=None):
                     output.append({**match,'item':public_item(row)})
             return output
         if not candidates:
-            return {'matches': [], 'method': 'rules', 'message': '暂无相反类型的公开线索，可以稍后再试。'}
+            return {'matches': [], 'method': 'rules', 'message': '暂无同一数据范围的相反类型线索。演示与真实记录不会混合匹配，可以稍后再试。'}
         shortlist = [entry['item'] for entry in rules[:12]]
         try:
             raw = await run_ai(ai.rank_matches, target, shortlist)

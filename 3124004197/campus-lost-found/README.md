@@ -95,3 +95,50 @@ env -u PYTHONPATH PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q
 - [演示与答辩流程](docs/演示与答辩流程.md)
 
 官方 API 文档：https://api-docs.deepseek.com/api/create-chat-completion
+
+## V0.3 完善内容
+
+- 点击右上角昵称可修改本人昵称、联系方式和密码。演示账号资料固定；密码修改会使其他会话失效。
+- 待核验请求可以撤回；物品仍有效时可补充说明再提交。拒绝后原样重复提交会被阻止。
+- 发布者审批会检查页面所见的请求版本，说明变化时需要刷新再核验。撤回、拒绝与归还使用独立处理原因，不依赖用户备注判断。
+- 编辑物品可同时替换或移除照片；文字与图片验证完成后一起保存。无效图片不会把原信息改成半完成状态。
+- 公告板增加日期范围、隐藏演示记录与清空筛选。登录时每 20 秒更新请求进展（页面隐藏时暂停）。
+- AI 对话支持重新开始；失败保留问题，切换账号不会展示旧响应。
+- 校园日期按 Asia/Shanghai 计算，创建时间仍使用 UTC。可用 `APP_TIMEZONE` 配置校园时区。
+
+旧数据库会自动追加请求处理原因字段，保留原有用户、物品、请求和对话。建议升级前备份。
+
+## 备份与恢复
+
+```bash
+.venv/bin/python -m campus_app.backup
+```
+
+默认生成 `data/backups/campus-时间.zip`，包括一致的 SQLite 快照与仍被记录引用的照片，不包含 API 密钥、原始 EXIF 或历史备份。文件权限为 600。备份包含用户资料，应保存在私有位置。
+
+备份期间暂时阻止写入以保证照片和数据库一致，建议低流量时运行。恢复时停止服务，将备份解压到新的空目录，再通过 `DATA_DIR` 指向该目录启动；不要直接覆盖仍运行的数据目录。
+
+Docker 备份：
+
+```bash
+docker compose exec app python -m campus_app.backup
+```
+
+## Docker Compose
+
+```bash
+docker compose up -d --build
+```
+
+数据保存在独立持久卷中。若本机 8080 已被占用，可以 `PORT=8081 docker compose up -d --build`。
+
+```bash
+docker compose logs -f app
+docker compose down
+```
+
+`down` 保留数据卷。不要使用 `down -v`，除非明确要删除数据。生产使用 HTTPS 反向代理并在 `.env` 设置 `COOKIE_SECURE=1`；目前尚无服务器或域名，未进行公网部署。
+
+V0.3 验证：22 项 Python、6 项前端状态测试通过；真实浏览器完成新增闭环，Docker 完成启动、持久化重启与备份测试。前端回归可用 `node --test tests/frontend.test.cjs` 执行。
+
+演示账号只处理演示记录；普通账号只申请真实记录，不能把真实核验说明提交给共享演示账号。

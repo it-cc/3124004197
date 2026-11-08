@@ -312,3 +312,43 @@ def test_backup_is_consistent_and_does_not_include_env(app,tmp_path):
             assert conn.execute('SELECT COUNT(*) FROM items').fetchone()[0]==1
         assert output.stat().st_mode & 0o777==0o600
         with pytest.raises(ValueError):backup(app.state.db.directory,output)
+
+
+def test_rejection_note_cannot_spoof_withdrawal(app):
+    with TestClient(app) as owner,TestClient(app) as claimant:
+        account(owner,'resolution_owner');account(claimant,'resolution_claimant');ident=item(owner)
+        body={'proof':'明确写出一份有效核验说明'}
+        claim=claimant.post(f'/api/items/{ident}/claims',json=body).json()['id']
+        owner.post(f'/api/claims/{claim}/decision',json={'decision':'reject','note':'申请者已撤回'})
+        result=claimant.get('/api/me/claims').json()['claims'][0]
+        assert result['resolution']=='rejected'
+        assert claimant.post(f'/api/items/{ident}/claims',json=body).status_code==409
+
+
+def test_legacy_database_migration_preserves_claims(tmp_path):
+    import sqlite3
+    from campus_app.db import Database,SCHEMA
+    db=Database(tmp_path)
+    legacy=SCHEMA.replace("resolution TEXT NOT NULL DEFAULT '', ",'')
+    with sqlite3.connect(db.path) as conn:
+        conn.executescript(legacy)
+        conn.execute("INSERT INTO users VALUES(1,'olduser','Old','hash','contact','stamp')")
+        conn.execute("INSERT INTO items(id,owner_id,kind,title,category,description,location,occurred_on,created_at,updated_at) VALUES(1,1,'found','old item','其他','old description','old place','2026-11-08','stamp','stamp')")
+        conn.execute("INSERT INTO claims(id,item_id,claimant_id,proof,status,note,created_at,updated_at) VALUES(1,1,1,'old proof','rejected','old note','stamp','stamp')")
+    db.initialize()
+    with db.connect() as conn:
+        row=conn.execute('SELECT * FROM claims WHERE id=1').fetchone()
+        assert row['proof']=='old proof' and row['note']=='old note' and row['resolution']=='ended'
+
+
+def test_claims_never_share_real_data_with_demo_accounts(tmp_path):
+    app=create_app(tmp_path,demo=True)
+    with TestClient(app) as real,TestClient(app) as demo:
+        account(real,'actual_user')
+        demo.post('/api/auth/login',json={'username':'demo_lost','password':'demo123456'})
+        found=next(row['id'] for row in real.get('/api/items?kind=found').json()['items'] if row['is_demo'])
+        assert real.post(f'/api/items/{found}/claims',json={'proof':'真实的私密说明不应该给演示账号'}).status_code==403
+        ident=item(real,'found')
+        assert demo.post(f'/api/items/{ident}/claims',json={'proof':'演示账号不应该获取真实联系方式'}).status_code==403
+        assert real.get('/api/me/claims').json()['claims']==[]
+        assert demo.get('/api/me/claims').json()['claims']==[]
