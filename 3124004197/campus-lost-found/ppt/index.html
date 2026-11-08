@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>寻回 · 先核对，再归还</title>
+<title>寻回 · 校园失物找回助手｜团队、选题与需求分析</title>
 <!-- GZ:FONTS:START · 字体由 guizang-design 字体清单生成；需要把字体内置进 HTML 时用 gz-fonts.mjs embed（卡片 skill 的 render.mjs 会自动内置） -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1016,6 +1016,14 @@
     .pipeline{grid-template-columns:repeat(2,1fr)}
     .grid-2-7-5,.grid-2-6-6,.grid-2-8-4{grid-template-columns:1fr}
   }
+
+/* 内容重写：与现有 magazine 模板同主题，集中定义正文组件。 */
+.deck-slide .deck-frame{margin-top:4vh;gap:2.1vh;justify-content:flex-start;min-height:0;flex:1}
+.deck-heading{flex:0 0 auto}.deck-title{font-family:var(--serif-zh);font-size:min(3.1vw,5.5vh);line-height:1.25;font-weight:650;letter-spacing:-.02em;margin:0}.deck-lead{font-family:var(--sans-zh);font-size:min(1.4vw,2.49vh);line-height:1.5;margin:1.2vh 0 0;color:var(--text-body)}
+.deck-grid{display:grid;grid-template-columns:1fr 1fr;gap:2vh 2vw;min-height:0}.deck-split{grid-template-columns:4.4fr 7.6fr;flex:1}.deck-stack{display:flex;flex-direction:column;gap:1.7vh;min-height:0}.deck-card{padding:1.7vh 1.4vw;border-radius:6px;background:rgba(var(--ink-rgb),.045);min-width:0}.dark .deck-card{background:rgba(var(--paper-rgb),.075)}.deck-card h3{font-family:var(--sans-zh);font-size:min(1.65vw,2.93vh);font-weight:600;line-height:1.4;margin:0 0 .8vh}.deck-card p,.deck-card li,.deck-note{font-family:var(--sans-zh);font-size:min(1.38vw,2.45vh);line-height:1.62;margin:0;color:var(--text-body)}.deck-card ul{margin:1vh 0 0;padding-left:1.2em;display:grid;gap:1.1vh}.deck-card small{display:block;font-family:var(--sans-zh);font-size:min(1.05vw,1.86vh);line-height:1.55;color:var(--text-secondary);margin-top:1.1vh}.deck-note{padding:1.4vh 1.5vw;background:rgba(var(--ink-rgb),.06);border-radius:5px}.dark .deck-note{background:rgba(var(--paper-rgb),.08)}.deck-note strong{font-weight:600;margin-right:.6em}.deck-caption{font-family:var(--sans-zh);font-size:min(1vw,1.77vh);line-height:1.6;margin:0;color:var(--text-secondary)}
+.deck-cover{display:flex;flex-direction:column;gap:3vh;flex:1;justify-content:center}.deck-position{font-family:var(--sans-zh);font-size:min(2vw,3.55vh);line-height:1.5;max-width:45ch;margin:0}.deck-cover .deck-grid{margin-top:1vh}.deck-shot{margin:0;padding:1.1vh 1vw;border-radius:6px;background:var(--paper);display:flex;flex-direction:column;min-height:0;min-width:0;flex:1;overflow:hidden;border:1px solid var(--line)}.deck-shot img{width:100%;height:100%;flex:1 1 auto;min-height:0;object-fit:contain}.deck-shot figcaption{font-family:var(--sans-zh);font-size:min(.95vw,1.69vh);line-height:1.5;color:var(--ink);margin-top:.7vh;flex:0 0 auto}.deck-table{border-collapse:collapse;width:100%;table-layout:fixed;font-family:var(--sans-zh);font-size:min(1.29vw,2.29vh);line-height:1.55}.deck-table th{text-align:left;font-weight:600;color:var(--text-primary);padding:1.1vh 1vw;background:rgba(var(--ink-rgb),.07)}.deck-table td{padding:1.3vh 1vw;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text-body)}.dark .deck-table th{background:rgba(var(--paper-rgb),.1)}.deck-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:1vw;flex:0 0 auto}.deck-flow>div{padding:1.3vh 1vw;background:rgba(var(--ink-rgb),.055);border-radius:5px;position:relative}.deck-flow strong{font-family:var(--sans-zh);font-size:min(1.3vw,2.31vh);line-height:1.4}.deck-flow p{font-family:var(--sans-zh);font-size:min(1.02vw,1.81vh);line-height:1.5;margin:.7vh 0 0;color:var(--text-body)}.deck-example p+p{margin-top:1.5vh}.deck-architecture{display:flex;flex-direction:column;gap:1.3vh;min-height:0}.deck-down{text-align:center;font-size:2.5vh;line-height:1}.deck-slide .foot{margin-top:2vh;opacity:.65;font-size:min(.95vw,1.69vh);letter-spacing:0;text-transform:none}.deck-slide .chrome{letter-spacing:.06em;text-transform:none}.deck-slide .hero-text{margin:0}
+@media(max-width:900px){.deck-title{font-size:min(4vw,6vh)}.deck-split{grid-template-columns:4.4fr 7.6fr}.deck-grid{gap:1.5vh 1.4vw}.deck-card{padding:1.2vh 1vw}.deck-card h3{font-size:min(1.8vw,3.2vh)}}
+
 </style>
 </head>
 <body>
@@ -1062,241 +1070,65 @@
      页面组件参考 references/components.md
      ============================================================ -->
 
-<section class="slide hero dark" data-slide-id="cover">
-  <div class="chrome">
-    <div>V0.3 · 2026.11.09</div>
-    <div>01 / 07</div>
-  </div>
-  <div class="frame" style="display:grid; gap:3.2vh; align-content:center">
-    <div class="kicker" data-anim>脉语团队</div>
-    <h1 class="h-hero" style="white-space:nowrap" data-anim>寻回</h1>
-    <h2 class="h-sub" style="white-space:nowrap" data-anim>先核对，再归还</h2>
-    <p class="lead" style="max-width:46vw" data-anim>蔡志冲与林华杰。丢失和拾得放在同一处，匹配只比较公开文字。</p>
-    <div class="meta-row" data-anim>
-      <span>3124004197 蔡志冲 · 后端 / AI</span>
-      <span>·</span>
-      <span>3124004213 林华杰 · 前端 / 测试</span>
-    </div>
-  </div>
-  <div class="foot">
-    <div>校园失物 · 本地演示</div>
-    <div>Vol.01</div>
-  </div>
+<section class="slide deck-slide hero dark" data-slide-id="cover">
+<div class="chrome"><span>脉语团队 / 团队展示</span><span>01 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">寻回：校园失物找回助手</h2><p class="deck-lead">团队、产品定位与目标</p></div><div class="deck-cover"><p class="deck-position">集中发布线索，用 AI 找候选，由双方核验归还。</p><div class="deck-grid"><article class="deck-card"><h3>蔡志冲 · 3124004197</h3><p>后端、AI 接入、数据库与部署<br>负责权限、匹配接口和运行环境。</p></article><article class="deck-card"><h3>林华杰 · 3124004213</h3><p>前端、需求整理与测试<br>负责发布、核验和咨询交互。</p></article></div><div class="deck-note"><strong>团队愿景</strong>让校园里的失物线索得到回应，让同学的善意更容易转化为实际帮助。</div><p class="deck-caption">软件工程选题与需求分析答辩 · V0.3 · 2026.11.09</p></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 1/10</span></div>
 </section>
 
-<section class="slide light" data-slide-id="mismatch" data-animate="directional">
-  <div class="chrome">
-    <div>选题 · 线索散落</div>
-    <div>02 / 07</div>
-  </div>
-  <div class="frame" style="justify-content:center; gap:2.2vh">
-    <div class="kicker" data-anim>Before / After</div>
-    <h2 class="h-xl" style="white-space:nowrap" data-anim>对不上</h2>
-    <p class="lead" style="max-width:62vw" data-anim>群聊和公告栏发得出消息。说法一对不上，东西就还不回去。</p>
-    <div class="grid-2-6-6" style="gap:4vw; margin-top:1.6vh">
-      <div data-anim="left" style="padding:3.2vh 1.8vw; border-left:3px solid currentColor; opacity:.72">
-        <div class="kicker" style="opacity:.9">现在</div>
-        <h3 class="h-md" style="margin-top:1.4vh">群聊 · 公告栏</h3>
-        <ul style="margin-top:2.4vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.6vh; font-family:var(--sans-zh); font-size:max(18px,1.15vw); line-height:1.5">
-          <li>描述很快被后面的消息盖住</li>
-          <li>同一件东西，两边叫法不同</li>
-          <li>联系方式先写在公开文本里</li>
-        </ul>
-      </div>
-      <div data-anim="right" style="padding:3.2vh 1.8vw; border-left:3px solid currentColor">
-        <div class="kicker" style="opacity:.9">寻回</div>
-        <h3 class="h-md" style="margin-top:1.4vh">集中 · 再核验</h3>
-        <ul style="margin-top:2.4vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.6vh; font-family:var(--sans-zh); font-size:max(18px,1.15vw); line-height:1.5">
-          <li>寻物和拾物在同一块板子上</li>
-          <li>用公开文字找出相近候选</li>
-          <li>核验通过，才交换联系方式</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="foot">
-    <div>假设仍待访谈 · 不是调研结论</div>
-    <div>02</div>
-  </div>
+<section class="slide deck-slide light" data-slide-id="mismatch">
+<div class="chrome"><span>脉语团队 / 选题报告</span><span>02 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">校园失物找回，难在信息与核对</h2><p class="deck-lead">从具体使用场景确定功能，而不是先堆技术</p></div><div class="deck-grid"><article class="deck-card"><h3>丢失者：线索分散</h3><p>要翻不同群聊和公告；消息被覆盖后，难以持续检索。</p></article><article class="deck-card"><h3>拾物者：描述不统一</h3><p>失主写“保温杯”，拾物者可能只写“蓝色水杯、白色盖子”。</p></article><article class="deck-card"><h3>双方：仅靠公开描述不够</h3><p>同款物品可能相似，需要时间、地点和未公开特征进一步核对。</p></article><article class="deck-card"><h3>产品回应</h3><p>集中发布与筛选 → 给候选和理由 → 提交核验说明 → 人工确认归还。</p></article></div><div class="deck-note">以上是待验证的校园场景假设，不是已完成问卷或访谈的统计结论。</div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 2/10</span></div>
 </section>
 
-<section class="slide dark" data-slide-id="blue-cup">
-  <div class="chrome">
-    <div>演示 · 虚构线索</div>
-    <div>03 / 07</div>
-  </div>
-  <div class="frame grid-2-7-5" style="align-content:center">
-    <div style="display:flex; flex-direction:column; justify-content:space-between; gap:3vh">
-      <div>
-        <div class="kicker" data-anim>一条演示</div>
-        <h2 class="h-xl" style="white-space:nowrap" data-anim>蓝色杯</h2>
-        <p class="lead" style="margin-top:2.4vh" data-anim>一边写“蓝色保温杯”，另一边写“图书馆拾得蓝色水杯”。比较的是杯身、白盖、小猫贴纸、地点和日期。</p>
-      </div>
-      <div class="callout" data-anim>
-        分数是相关度，不是物主概率。<br>候选必须来自后端交出的记录。
-        <div class="callout-src">合成演示 · 不是真实找回</div>
-      </div>
-    </div>
-    <figure class="frame-img r-4x3" data-anim>
-      <img src="images/03-cup.jpg" alt="木桌上的蓝色保温杯，白盖，杯身有猫形贴纸" style="object-position:center center">
-      <figcaption class="img-cap">配图意象 · 不是用户照片</figcaption>
-    </figure>
-  </div>
-  <div class="foot">
-    <div>演示数据 · 蓝色杯</div>
-    <div>03</div>
-  </div>
+<section class="slide deck-slide light" data-slide-id="users-research">
+<div class="chrome"><span>脉语团队 / 需求来源</span><span>03 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">三类用户，三组可验证的需求</h2><p class="deck-lead">需求假设已整理，真实用户证据仍待补充</p></div><table class="deck-table"><thead><tr><th>用户</th><th>需要完成的任务</th><th>优先需求</th></tr></thead><tbody><tr><td>丢失者</td><td>登记物品，寻找相关拾物线索</td><td>发布、检索、AI 匹配、提交说明</td></tr><tr><td>拾物者</td><td>发布拾物信息，回应与核验认领</td><td>收到请求、核验、登记归还</td></tr><tr><td>浏览者</td><td>帮同学寻找或补充线索</td><td>公开浏览、筛选、提交线索</td></tr></tbody></table><div class="deck-grid"><article class="deck-card"><h3>调研现状</h3><p>目前尚未提供真实访谈／问卷证据，不能把代码测试或演示账号作为用户调研。</p></article><article class="deck-card"><h3>下一步验证</h3><p>访谈有丢失／拾物经历的同学：现有渠道、最费时步骤、愿意公开的信息、核验方式。</p></article></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 3/10</span></div>
 </section>
 
-<section class="slide light" data-slide-id="five-steps">
-  <div class="chrome">
-    <div>需求 · 归还路径</div>
-    <div>04 / 07</div>
-  </div>
-  <div class="frame">
-    <div class="kicker" data-anim>从发布到归还</div>
-    <h2 class="h-xl" style="white-space:nowrap" data-anim>五步走</h2>
-    <div class="pipeline-section">
-      <div class="pipeline-label">人在走的路径</div>
-      <div class="pipeline">
-        <div class="step" data-anim>
-          <div class="step-nb">01</div>
-          <div class="step-title">发布</div>
-          <div class="step-desc">写下可公开的线索</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">02</div>
-          <div class="step-title">匹配</div>
-          <div class="step-desc">搜索，或比较公开文字</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">03</div>
-          <div class="step-title">申请</div>
-          <div class="step-desc">提交认领或线索说明</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">04</div>
-          <div class="step-title">核验</div>
-          <div class="step-desc">发布者亲自确认</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">05</div>
-          <div class="step-title">归还</div>
-          <div class="step-desc">通过后才交换联系</div>
-        </div>
-      </div>
-    </div>
-    <div class="pipeline-section">
-      <div class="pipeline-label">模型停在这里</div>
-      <div class="pipeline" data-cols="4">
-        <div class="step" data-anim>
-          <div class="step-nb">01</div>
-          <div class="step-title">不改归属</div>
-          <div class="step-desc">候选不会变成已归还</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">02</div>
-          <div class="step-title">不批请求</div>
-          <div class="step-desc">确认键只在发布者手里</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">03</div>
-          <div class="step-title">不见联系</div>
-          <div class="step-desc">通过之前双方都看不到</div>
-        </div>
-        <div class="step" data-anim>
-          <div class="step-nb">04</div>
-          <div class="step-title">失败标明</div>
-          <div class="step-desc">接口不通就写成关键词</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="foot">
-    <div>搜索或匹配 · 然后才是核验</div>
-    <div>04</div>
-  </div>
+<section class="slide deck-slide dark" data-slide-id="product-map">
+<div class="chrome"><span>脉语团队 / 产品全景</span><span>04 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">一个网站，覆盖从发布到归还的过程</h2><p class="deck-lead">真实界面承载用户操作，不用意象照片代替功能展示</p></div><div class="deck-grid deck-split"><div class="deck-stack"><article class="deck-card"><h3>账号与发布</h3><p>登录、文字与照片、私密核验特征；本人记录可编辑和关闭。</p></article><article class="deck-card"><h3>检索与匹配</h3><p>关键词、类别、日期、状态筛选；AI 比较公开线索。</p></article><article class="deck-card"><h3>认领与核验</h3><p>请求、撤回、补充说明、发布者审批、通过后联系。</p></article><article class="deck-card"><h3>咨询与管理</h3><p>按物品持续问答，资料／密码修改，对话重置与数据保存。</p></article></div><figure class="deck-shot"><img src="images/04-board-focus.png" alt="真实公告板界面；记录带演示标签，不是实际找回案例" loading="eager"><figcaption>真实公告板界面；记录带演示标签，不是实际找回案例</figcaption></figure></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 4/10</span></div>
 </section>
 
-<section class="slide hero light" data-slide-id="human-check" data-animate="quote">
-  <div class="chrome">
-    <div>原则</div>
-    <div>05 / 07</div>
-  </div>
-  <div class="frame" style="display:grid; gap:4vh; align-content:center">
-    <div class="kicker" data-anim>分开两件事</div>
-    <blockquote style="font-family:var(--serif-zh); font-weight:700; font-size:min(6.4vw,11vh); line-height:1.12; letter-spacing:-.01em; margin:0">
-      <span data-anim="line" style="display:block; white-space:nowrap">核验在前</span>
-      <span data-anim="line" style="display:block; white-space:nowrap">联系在后</span>
-    </blockquote>
-    <p class="lead" style="max-width:42vw" data-anim>模型可以指出相近的描述。它不能批准请求，也不能把联系方式交出去。</p>
-  </div>
-  <div class="foot">
-    <div>匹配不是认领</div>
-    <div>05</div>
-  </div>
+<section class="slide deck-slide light" data-slide-id="blue-cup">
+<div class="chrome"><span>脉语团队 / 核心亮点</span><span>05 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">AI 把不同说法转成值得核对的候选</h2><p class="deck-lead">智能体嵌入匹配任务：比较、解释、建议核对</p></div><div class="deck-flow"><div><strong>检索池</strong><p>最多 150 条有效、相反类型记录</p></div><div><strong>规则预筛</strong><p>按特征、地点、日期选最多 12 条</p></div><div><strong>DeepSeek</strong><p>比较公开描述并生成理由</p></div><div><strong>结果校验</strong><p>候选 ID 必须来自检索列表</p></div><div><strong>输出线索</strong><p>最多 8 条＋得分＋核对建议</p></div></div><div class="deck-grid deck-split"><div class="deck-card deck-example"><h3>演示输入</h3><p><strong>寻物：</strong>蓝色保温杯<br><strong>拾物：</strong>图书馆拾得蓝色水杯</p><p>共同公开特征：蓝色杯身、白色杯盖、小猫贴纸；结合地点与日期进一步比较。</p><small>得分表示相关度，不是“物主概率”。真实与演示记录分开匹配。</small></div><figure class="deck-shot"><img src="images/05-ai-matches.png" alt="实际 DeepSeek 匹配结果：候选、理由与核对问题" loading="eager"><figcaption>实际 DeepSeek 匹配结果：候选、理由与核对问题</figcaption></figure></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 5/10</span></div>
 </section>
 
-<section class="slide light" data-slide-id="three-lines">
-  <div class="chrome">
-    <div>需求 · 已经守住的线</div>
-    <div>06 / 07</div>
-  </div>
-  <div class="frame" style="justify-content:center; gap:2vh">
-    <div>
-      <div class="kicker" data-anim>边界</div>
-      <h2 class="h-xl" style="white-space:nowrap; font-size:min(4.8vw,8.2vh)" data-anim>三条线</h2>
-    </div>
-    <div class="grid-3" style="flex:0; align-content:start; gap:1.2vh 2vw" data-anim>
-      <div style="border-top:1px solid var(--line-strong); padding-top:1.2vh">
-        <h3 class="h-md">私密不进模型</h3>
-        <p style="margin-top:.8vh; font-family:var(--sans-zh); font-size:max(18px,1.05vw); line-height:1.45; opacity:.78">核验特征和联系方式留在站内。</p>
-      </div>
-      <div style="border-top:1px solid var(--line-strong); padding-top:1.2vh">
-        <h3 class="h-md">通过才可见</h3>
-        <p style="margin-top:.8vh; font-family:var(--sans-zh); font-size:max(18px,1.05vw); line-height:1.45; opacity:.78">公开页和待核验请求都不带联系方式。</p>
-      </div>
-      <div style="border-top:1px solid var(--line-strong); padding-top:1.2vh">
-        <h3 class="h-md">照片给人看</h3>
-        <p style="margin-top:.8vh; font-family:var(--sans-zh); font-size:max(18px,1.05vw); line-height:1.45; opacity:.78">不做识别，重编码时去掉原始 EXIF。</p>
-      </div>
-    </div>
-    <div class="grid-2-6-6" style="gap:1.4vw; margin-top:.6vh">
-      <figure class="frame-img r-16x9" style="max-height:38vh" data-anim>
-        <img src="images/06-keys.jpg" alt="石凳上的一串钥匙和一张空白卡片" style="object-position:center 74%">
-        <figcaption class="img-cap">钥匙 · 配图意象</figcaption>
-      </figure>
-      <figure class="frame-img r-16x9" style="max-height:38vh" data-anim>
-        <img src="images/06-board.jpg" alt="软木板上钉着几张空白纸" style="object-position:center 42%">
-        <figcaption class="img-cap">公告栏 · 配图意象</figcaption>
-      </figure>
-    </div>
-  </div>
-  <div class="foot">
-    <div>访谈未做 · 公网未上线</div>
-    <div>06</div>
-  </div>
+<section class="slide deck-slide light" data-slide-id="five-steps">
+<div class="chrome"><span>脉语团队 / 核验闭环</span><span>06 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">认领需要核验，状态变化有明确权限</h2><p class="deck-lead">从待核验到通过／拒绝，人工决定与程序约束相互配合</p></div><div class="deck-flow"><div><strong>发布信息</strong><p>保留未公开特征供核对</p></div><div><strong>提交申请</strong><p>说明只有双方可见</p></div><div><strong>人工核验</strong><p>只有发布者可通过／拒绝</p></div><div><strong>更新状态</strong><p>撤回、补充、重申有记录</p></div><div><strong>确认归还</strong><p>通过后向对方显示联系</p></div></div><div class="deck-grid"><div class="deck-stack"><article class="deck-card"><h3>避免旧证据误审批</h3><p>申请说明被修改后，核验页面提交的旧版本会被拒绝，需刷新再检查。</p></article><article class="deck-card"><h3>信息按用途分层</h3><p>公开描述用于寻找；私密特征用于人工核验；通过后共享对方联系方式。</p></article></div><div class="deck-stack"><figure class="deck-shot"><img src="images/06-review-pending.png" alt="核验前：请求说明与发布者操作" loading="eager"><figcaption>核验前：请求说明与发布者操作</figcaption></figure><figure class="deck-shot"><img src="images/06-review-approved.png" alt="核验后：归还状态与双方联系信息；均为演示数据" loading="eager"><figcaption>核验后：归还状态与双方联系信息；均为演示数据</figcaption></figure></div></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 6/10</span></div>
 </section>
 
-<section class="slide hero dark" data-slide-id="who-checks">
-  <div class="chrome">
-    <div>留给提问</div>
-    <div>07 / 07</div>
-  </div>
-  <div class="frame" style="display:grid; gap:4.5vh; align-content:center">
-    <div class="kicker" data-anim>The Question</div>
-    <h1 class="h-hero" style="font-size:min(6.6vw,11.4vh); line-height:1.12">
-      <span data-anim style="display:block; white-space:nowrap">谁来核对</span>
-      <span data-anim style="display:block; white-space:nowrap">才能归还</span>
-    </h1>
-    <p class="lead" style="max-width:36vw" data-anim>公开文字把相近的记录放在一起。那件东西本身，仍要有人核对。</p>
-  </div>
-  <div class="foot">
-    <div>进入提问</div>
-    <div>07</div>
-  </div>
+<section class="slide deck-slide dark" data-slide-id="ai-consultation">
+<div class="chrome"><span>脉语团队 / 智能咨询</span><span>07 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">围绕当前物品，持续咨询下一步行动</h2><p class="deck-lead">信息有上下文，问答有记忆，用户可以继续追问</p></div><div class="deck-grid deck-split"><div class="deck-stack"><article class="deck-card"><h3>不是无上下文的聊天框</h3><p>始终带当前物品的公开信息，可追问搜索渠道和认领时的核对方法。</p></article><article class="deck-card"><h3>能连续追问</h3><p>最近 20 轮问答作为上下文；按用户＋物品在 SQLite 中隔离保存。</p></article><article class="deck-card"><h3>有失败与重置机制</h3><p>失败不写入成功历史，问题可重试；重新开始只清空本人的该物品问答。</p></article><p class="deck-caption">结构化联系方式、私密核验字段不拼入 AI 输入；用户主动填写的咨询文本会发送给模型。</p></div><figure class="deck-shot"><img src="images/07-chat-turns.png" alt="真实程序中的连续两轮问答，使用演示账号与演示记录" loading="eager"><figcaption>真实程序中的连续两轮问答，使用演示账号与演示记录</figcaption></figure></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 7/10</span></div>
 </section>
 
+<section class="slide deck-slide light" data-slide-id="requirements-acceptance">
+<div class="chrome"><span>脉语团队 / 需求分析</span><span>08 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">需求写成行为，验收写成可检查的条件</h2><p class="deck-lead">验收聚焦权限、数据真实性、异常处理与状态一致性</p></div><table class="deck-table"><thead><tr><th>核心需求</th><th>验收条件</th><th>对应验证</th></tr></thead><tbody><tr><td>发布与管理</td><td>非发布者不能编辑、删除或关闭记录</td><td>权限与输入检查</td></tr><tr><td>线索匹配</td><td>候选存在、当前有效；AI 失败明确回退规则</td><td>白名单、状态更新、降级</td></tr><tr><td>认领与联系</td><td>只有发布者审批；通过后向对方共享联系</td><td>双账号完整核验流程</td></tr><tr><td>持续咨询</td><td>用户／物品历史隔离，失败不加入历史</td><td>连续问答、切换与重置</td></tr><tr><td>持久化与图片</td><td>重启可恢复数据；图文修改不半完成</td><td>容器重启、照片替换、备份</td></tr></tbody></table><div class="deck-note">优先完成业务闭环；学校 SSO、图片识别、短信通知、地图与自动归还不列入首版验收承诺。</div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 8/10</span></div>
+</section>
+
+<section class="slide deck-slide dark" data-slide-id="system-architecture">
+<div class="chrome"><span>脉语团队 / 技术方案</span><span>09 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">程序管权限与状态，模型管语义与建议</h2><p class="deck-lead">接口嵌入真实业务，并以服务端规则约束 AI 输出</p></div><div class="deck-grid"><div class="deck-architecture"><div class="deck-card"><h3>Vue 前端</h3><p>公告板、发布、核验与咨询交互；显示加载、空结果和错误。</p></div><div class="deck-down">↓</div><div class="deck-card"><h3>FastAPI</h3><p>会话认证、资源授权、字段校验、图片重编码、状态事务与 AI 接口。</p></div><div class="deck-grid"><div class="deck-card"><h3>SQLite ＋文件</h3><p>用户、物品、请求、会话、历史问答与照片保存。</p></div><div class="deck-card"><h3>DeepSeek API</h3><p>公开候选比较与近期对话，不负责批准或归还。</p></div></div></div><div class="deck-stack"><article class="deck-card"><h3>为什么这样分工</h3><p>数值／身份／状态由程序校验，模型输出不能越过用户权限。</p></article><article class="deck-card"><h3>数据发送边界</h3><p>匹配发送公开文字、地点和日期；咨询附用户问题与近期问答。照片供人比对。</p></article><article class="deck-card"><h3>运行与恢复</h3><p>一键启动，Docker 持久卷，SQLite／关联照片一致备份；密钥留在服务端。</p></article></div></div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 9/10</span></div>
+</section>
+
+<section class="slide deck-slide hero light" data-slide-id="progress-roadmap">
+<div class="chrome"><span>脉语团队 / 进展与计划</span><span>10 / 10</span></div>
+<div class="frame deck-frame"><div class="deck-heading"><h2 class="deck-title">已完成可运行闭环，下一步补齐用户与上线证据</h2><p class="deck-lead">测试证明软件流程，用户调研与真实上线证明应用价值</p></div><div class="deck-grid"><div class="deck-card"><h3>已完成并验证</h3><ul><li>发布、筛选、AI 匹配、认领核验和持续咨询。</li><li>资料／密码修改、照片编辑、撤回与补充申请。</li><li><strong>22 项后端 ＋ 6 项前端状态测试通过。</strong></li><li>真实 DeepSeek、双账号归还、Docker 重启与备份验证。</li></ul></div><div class="deck-card"><h3>还需要完成</h3><ul><li>真实访谈／问卷，确认需求与使用价值。</li><li>团队合照和成员个人风采资料。</li><li>服务器、域名、HTTPS 与外部访问验收。</li><li>依据实际用户反馈调整检索、核验和交互。</li></ul></div></div><div class="deck-note"><strong>我们的目标：</strong>让校园线索得到回应，让物品更容易回到主人身边。</div></div>
+<div class="foot"><span>寻回 · 校园失物找回助手</span><span>正文 10/10</span></div>
+</section>
 
 </div>
 
@@ -1306,92 +1138,138 @@
 <script>
 const SPEAKER_NOTES = [
   {
-    id: "cover",
-    title: "寻回",
-    section: "团队",
-    purpose: "先报团队和题目，把核验先于联系定成这场的原则。",
-    talk: [
-      "脉语团队。蔡志冲负责后端、AI 接入和部署，林华杰负责前端、需求和测试。",
-      "性格、爱好和合照这次不讲，页面上只有分工。",
-      "寻回把丢失和拾得放在一处。匹配只看公开文字，归还仍要人核对。"
+    "id": "cover",
+    "title": "寻回：校园失物找回助手",
+    "section": "团队展示",
+    "purpose": "团队、产品定位与目标",
+    "talk": [
+      "先报产品类别：这是校园失物找回 Web 助手，核心是把分散线索集中起来。",
+      "团队成员蔡志冲与林华杰，页面给出学号和职责安排，学号不逐个朗读。",
+      "软件已经本地实现，后面展示产品、AI 流程及具体验收依据；没有使用学校官方身份认证。"
     ],
-    transition: "先说现在的线索为什么对不上。"
+    "transition": "先看丢失者和拾物者为什么需要这个工具。",
+    "minutes": 0.3333333333333333
   },
   {
-    id: "mismatch",
-    title: "对不上",
-    section: "选题",
-    purpose: "说明选题来自分散的丢失和拾得消息，并标明访谈还没做。",
-    talk: [
-      "群聊和公告栏能发出去，但描述会被后面的消息盖住，同一种东西说法也不一样。",
-      "联系方式常常先出现在公开文本里。",
-      "我们的假设是：需要集中发布和检索，还需要一套不能只靠公开描述就认领的核验。这还不是访谈结论。"
+    "id": "mismatch",
+    "title": "校园失物找回，难在信息与核对",
+    "section": "选题报告",
+    "purpose": "从具体使用场景确定功能，而不是先堆技术",
+    "talk": [
+      "从一次具体丢失经历讲场景，不把常见现象说成调研统计。",
+      "难点有信息分散、表达不同和归属核对，网站要同时处理这三个环节。",
+      "我们的目标是帮助找到值得核对的记录，而不是给出某件物品一定属于谁的结论。"
     ],
-    transition: "用一条虚构的蓝色杯，把说法不同变成具体例子。"
+    "transition": "把场景进一步落到三类用户的任务和需求。",
+    "minutes": 0.3333333333333333
   },
   {
-    id: "blue-cup",
-    title: "蓝色杯",
-    section: "选题",
-    purpose: "用演示数据说明比较的是公开特征，不是在宣布物主。",
-    talk: [
-      "演示记录是蓝色保温杯对图书馆拾得的蓝色水杯，比较杯身、白盖、小猫贴纸、地点和日期。",
-      "右边是配图，不是用户上传的照片，也不是真实找回。",
-      "分数是相关度。模型返回的编号必须落在后端给它的记录里。"
+    "id": "users-research",
+    "title": "三类用户，三组可验证的需求",
+    "section": "需求来源",
+    "purpose": "需求假设已整理，真实用户证据仍待补充",
+    "talk": [
+      "角色和任务决定优先级，三类用户不是三套独立系统。",
+      "需求假设还需要真实访谈支持，现有演示和测试只能证明软件流程。",
+      "接下来会用具体经历验证发布、检索和核验是否确实有用，再调整范围。"
     ],
-    transition: "例子清楚之后，按归还的实际顺序走一遍。",
-    cue: "这一页不打开系统",
-    fallback: "如果要看系统，用 demo_lost 和 demo_found，密码都是 demo123456。那条水杯若已归还，新建一对演示记录，或换一个新的 DATA_DIR。不要改真实用户记录。"
+    "transition": "这些需求对应到产品的四个功能区域。",
+    "minutes": 0.25
   },
   {
-    id: "five-steps",
-    title: "五步走",
-    section: "需求",
-    purpose: "把人走的路径和模型停住的位置放在同一页。",
-    talk: [
-      "顺序是发布、搜索或匹配、提交说明、发布者核验、确认归还。",
-      "模型可以给候选、理由和该核对的问题。它不改归属，不批准请求，也不交出联系方式。",
-      "接口失败时，页面写成关键词线索，不把它说成 AI 结果。"
+    "id": "product-map",
+    "title": "一个网站，覆盖从发布到归还的过程",
+    "section": "产品全景",
+    "purpose": "真实界面承载用户操作，不用意象照片代替功能展示",
+    "talk": [
+      "展示真实程序，图中可以看见发布入口、筛选和物品列表。",
+      "四组功能覆盖完整使用过程，AI 是其中一环。",
+      "后续功能细节已实现，但演讲重点放在匹配、核验和持续咨询，其他功能可在备用页展开。"
     ],
-    transition: "路径能讲完，就把原则收成一句。"
+    "transition": "先展开最有辨识度的功能：不同表达的线索如何被关联。",
+    "minutes": 0.3333333333333333
   },
   {
-    id: "human-check",
-    title: "核验在前",
-    section: "需求",
-    purpose: "把匹配和认领分开。",
-    talk: [
-      "停一下。相近只说明值得核对。",
-      "核验通过之前，公开列表、详情和待处理请求都不显示联系方式。",
-      "请求说明只有发布者和提交者看得到。只有发布者能点确认。"
+    "id": "blue-cup",
+    "title": "AI 把不同说法转成值得核对的候选",
+    "section": "核心亮点",
+    "purpose": "智能体嵌入匹配任务：比较、解释、建议核对",
+    "talk": [
+      "讲输入、筛选、语义比较和校验，而不是只说接入了一个模型。",
+      "不同标题仍可结合描述和时空线索判断哪些值得核对，程序给模型的是有限候选。",
+      "模型返回不存在的 ID 会被过滤；相关度不直接确定归属。",
+      "这个蓝色杯来自独立演示数据库，真实 API 已调用成功，但不是现实找回案例。"
     ],
-    transition: "原则落到三条已经守住的边界，以及两件还没做的事。"
+    "transition": "有候选之后，归还仍需要明确的申请和核验流程。",
+    "minutes": 0.5
   },
   {
-    id: "three-lines",
-    title: "三条线",
-    section: "需求",
-    purpose: "交代隐私边界，并说明调研和公网都还没完成。",
-    talk: [
-      "私密核验特征和账号联系方式不会送给模型。照片给人眼比对，不做识别，重编码时去掉原始 EXIF。",
-      "咨询只带当前物品的公开信息和最近二十轮，按人和物品分开。",
-      "登录是站内账号，没有学校统一认证。",
-      "访谈表还是空的。在线地址仍是本机，公网没有上线。下面两张也是配图，不是案例。"
+    "id": "five-steps",
+    "title": "认领需要核验，状态变化有明确权限",
+    "section": "核验闭环",
+    "purpose": "从待核验到通过／拒绝，人工决定与程序约束相互配合",
+    "talk": [
+      "核验不是一句原则，而是有权限与状态的业务流程。",
+      "申请者可以撤回或补充，发布者通过或拒绝；后台记录处理原因，不能用普通备注伪造状态。",
+      "联系方式通过前不向对方展示，用户本人仍可查看自己的资料。",
+      "审批带请求版本，避免在旧说明上误确认新申请；系统不提供学校身份认证。"
     ],
-    transition: "用一个问题收住，把时间留给提问。"
+    "transition": "除了找候选，用户也可以围绕这条信息持续咨询。",
+    "minutes": 0.4166666666666667
   },
   {
-    id: "who-checks",
-    title: "谁来核对",
-    section: "收束",
-    purpose: "用一个问题结束陈述，进入提问。",
-    talk: [
-      "我们希望每条线索都有回应，但回应不等于直接还。",
-      "公开文字负责把相近的记录放在一起。核对那件东西本身的人，仍是发布者。",
-      "陈述到这里。调研计划、演示账号和本地启动可以在提问里展开。"
+    "id": "ai-consultation",
+    "title": "围绕当前物品，持续咨询下一步行动",
+    "section": "智能咨询",
+    "purpose": "信息有上下文，问答有记忆，用户可以继续追问",
+    "talk": [
+      "这页展示用户可以追问，而不是获得一次性匹配后结束。",
+      "后续请求带当前公开信息和最近问答，真实连续两轮已验证。",
+      "按用户和物品隔离，不能把另一个人的对话当作上下文。",
+      "用户主动输入的文字会发到 AI，因此不能把“私密不进模型”说成任意输入都绝对私密。"
     ],
-    transition: "陈述结束，进入提问。",
-    advance: "讲完发布者之后停住"
+    "transition": "把这些体验改写为能检查的需求与验收条件。",
+    "minutes": 0.3333333333333333
+  },
+  {
+    "id": "requirements-acceptance",
+    "title": "需求写成行为，验收写成可检查的条件",
+    "section": "需求分析",
+    "purpose": "验收聚焦权限、数据真实性、异常处理与状态一致性",
+    "talk": [
+      "功能名不是需求分析，老师能据此检查的行为才是验收标准。",
+      "用越权、失败、数据更新和重启这些场景检查，而不是只展示一次成功。",
+      "完整功能表和数据模型放在备用页，不在四分钟内逐项朗读。"
+    ],
+    "transition": "这些条件由不同技术层承担，接下来解释职责划分。",
+    "minutes": 0.4166666666666667
+  },
+  {
+    "id": "system-architecture",
+    "title": "程序管权限与状态，模型管语义与建议",
+    "section": "技术方案",
+    "purpose": "接口嵌入真实业务，并以服务端规则约束 AI 输出",
+    "talk": [
+      "不逐个介绍技术名词，重点说每层负责哪条需求。",
+      "后端是唯一的权限与状态入口，模型只能建议，不能提交审批动作。",
+      "照片处理用于校验和重编码，不是图片智能识别；部署和备份已实际验证。"
+    ],
+    "transition": "最后用已验证的成果和明确下一步结束正文。",
+    "minutes": 0.3333333333333333
+  },
+  {
+    "id": "progress-roadmap",
+    "title": "已完成可运行闭环，下一步补齐用户与上线证据",
+    "section": "进展与计划",
+    "purpose": "测试证明软件流程，用户调研与真实上线证明应用价值",
+    "talk": [
+      "以成果结束正文，测试数来自实际执行记录，不代表真实找回率。",
+      "本机和 Docker 运行已验证，公网未上线；没有服务器或域名，不能编造网址。",
+      "真实需求证据仍待补齐，接下来访谈实际用户并完成外部访问验收。",
+      "到这里结束四分钟陈述，备用页只在答辩需要时打开。"
+    ],
+    "transition": "正文结束，进入三分钟答辩，按问题选择备用页。",
+    "minutes": 0.3333333333333333
   }
 ];
 window.__SPEAKER_NOTES__ = SPEAKER_NOTES;
@@ -1905,7 +1783,7 @@ window.__pptPresenter=(()=>{
     return Number.isFinite(minutes)&&minutes>0?minutes*60000:null;
   }
   function totalPlannedMs(){
-    const values=Array.from({length:total},(_,i)=>plannedMsAt(i));
+    const values=Array.from({length:total},(_,i)=>({i,ms:plannedMsAt(i)})).filter(x=>!noteAt(x.i).appendix).map(x=>x.ms);
     return values.length&&values.every(Number.isFinite)?values.reduce((sum,x)=>sum+x,0):null;
   }
   function sectionInfo(i){
